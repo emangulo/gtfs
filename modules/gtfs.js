@@ -28,10 +28,7 @@ let getGTFS = async () => {
 
     feed.entity.forEach((entity) => {
       if (entity.tripUpdate) {
-        results.push({
-          trip: entity.tripUpdate.trip,
-          stopTimeUpdate: entity.tripUpdate.stopTimeUpdate,
-        });
+        results.push(entity.tripUpdate);
       }
     });
 
@@ -42,23 +39,24 @@ let getGTFS = async () => {
   }
 };
 
-let getStationData = async (routeID = "Orange County Line", stopID = "156") => {
+let getStationData = async (stopID) => {
   try {
     let feed = await getGTFS();
-
-    let filtered = feed.filter((entity) => entity.trip.routeId === routeID);
-
     let response = [];
+    // let filtered = feed.filter((entity) => entity.trip.routeId === routeID);
 
-    filtered.forEach((trip) => {
-      let direction = trip.trip.directionId == 1 ? "North" : "South";
+    feed.forEach((trip) => {
+      let route = trip.trip.routeId;
+      let direction = trip.trip.directionId; // == 1 ? "North" : "South";
       let allStops = trip.stopTimeUpdate;
+
+      let stops = [];
 
       allStops.forEach((stop) => {
         if (stop.stopId == stopID && stop.arrival.time >= Date.now() / 1000) {
           let unix = stop.arrival.time;
           let timestamp = new Date(unix * 1000).toLocaleTimeString();
-          response.push(`${direction}  ${timestamp}`);
+          response.push(`{${route} TO ${direction} ${timestamp}}`);
         }
       });
     });
