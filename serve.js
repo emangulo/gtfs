@@ -8,9 +8,11 @@ let app = express();
 app.get("/", async (req, res) => {
   try {
     let stationData = await getStationData();
-    let now = Date.now();
     res.send(stationData);
-    console.log("Sent");
+
+    let now = new Date(Date.now());
+
+    console.log(`Updated: ${now.toString()}`);
   } catch (error) {
     console.error(error);
   }
