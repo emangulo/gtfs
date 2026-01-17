@@ -47,16 +47,16 @@ let getStationData = async (stopID) => {
 
     feed.forEach((trip) => {
       let route = trip.trip.routeId;
-      let direction = trip.trip.directionId; // == 1 ? "North" : "South";
+      let direction = trip.trip.directionId;
       let allStops = trip.stopTimeUpdate;
-
-      let stops = [];
 
       allStops.forEach((stop) => {
         if (stop.stopId == stopID && stop.arrival.time >= Date.now() / 1000) {
           let unix = stop.arrival.time;
           let timestamp = new Date(unix * 1000).toLocaleTimeString();
-          response.push(`{${route} TO ${direction} ${timestamp}}`);
+          response.push(
+            `{${lineInfo[route].short_name} -> ${lineInfo[route].to[direction]} ${timestamp}}`,
+          );
         }
       });
     });
@@ -65,6 +65,23 @@ let getStationData = async (stopID) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+let lineInfo = {
+  "Orange County Line": {
+    short_name: "OC Line",
+    to: {
+      0: "Oceanside",
+      1: "LA",
+    },
+  },
+  "Inland Emp.-Orange Co. Line": {
+    short_name: "OC-IE Line",
+    to: {
+      0: "Oceanside",
+      1: "San Bernardino",
+    },
+  },
 };
 
 export { getStationData };
