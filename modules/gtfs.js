@@ -61,7 +61,19 @@ let getStationData = async (stopID) => {
       });
     });
 
-    return JSON.stringify(response);
+    const sorted = response.sort((a, b) => {
+      // extract the time part (e.g. "3:01:00 PM")
+      const timeA = a.match(/\d{1,2}:\d{2}:\d{2}\s[AP]M/)[0];
+      const timeB = b.match(/\d{1,2}:\d{2}:\d{2}\s[AP]M/)[0];
+
+      // convert to Date objects for comparison
+      const dateA = new Date(`1970-01-01 ${timeA}`);
+      const dateB = new Date(`1970-01-01 ${timeB}`);
+
+      return dateA - dateB;
+    });
+
+    return sorted;
   } catch (error) {
     console.error(error);
   }
