@@ -51,17 +51,20 @@ let getStationData = async (stopID) => {
       let allStops = trip.stopTimeUpdate;
 
       allStops.forEach((stop) => {
+        let unix = stop.arrival.time;
         if (stop.stopId == stopID && stop.arrival.time >= Date.now() / 1000) {
-          let unix = stop.arrival.time;
-          let timestamp = new Date(unix * 1000).toLocaleTimeString();
-          response.push(
-            `{${lineInfo[route].short_name} -> ${lineInfo[route].to[direction]} ${timestamp}}`,
-          );
+          response.push({
+            route: lineInfo[route].short_name,
+            to: lineInfo[route].to[direction],
+            unix: unix,
+            time: new Date(unix * 1000).toLocaleTimeString(),
+          });
         }
       });
     });
+    response.sort((a, b) => a.unix - b.unix);
 
-    return JSON.stringify(response);
+    return formatter(response);
   } catch (error) {
     console.error(error);
   }
@@ -82,6 +85,15 @@ let lineInfo = {
       1: "San Bernardino",
     },
   },
+};
+
+let formatter = (jason) => {
+  let res = [];
+
+  jason.forEach((entity) => {
+    res.push(`${entity.route} > ${entity.to} ${entity.time} ...`);
+  });
+  return JSON.stringify(res);
 };
 
 export { getStationData };
