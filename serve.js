@@ -8,6 +8,7 @@ let app = express();
 app.get("/:stationID", async (req, res) => {
   try {
     let stationData = await getStationData(req.params.stationID);
+    console.log(stationData);
     res.send(stationData);
 
     let now = new Date(Date.now());
