@@ -11,6 +11,7 @@ let headers = {
   },
 };
 
+// Get's all data from metrolink soruce
 let getGTFS = async () => {
   try {
     const response = await fetch(url, headers);
@@ -41,52 +42,53 @@ let getGTFS = async () => {
   }
 };
 
-let getStationData = async (stopID) => {
-  try {
-    let feed = await getGTFS();
-    let response = [];
-    // let filtered = feed.filter((entity) => entity.trip.routeId === routeID);
+// Get cache data or update cache with latest
+let getCacheData = async () => {
+  let now = Date.now();
 
-    feed.forEach((trip) => {
-      let route = trip.trip.routeId;
-      let direction = trip.trip.directionId;
-      let allStops = trip.stopTimeUpdate;
+  let last_updated = localCache.live.table.last_updated;
+  let update_interval = localCache.live.update_interval;
+  let timeSinceUpdate = now - last_updated;
 
-      allStops.forEach((stop) => {
-        let unix = stop.arrival.time;
-        if (stop.stopId == stopID && stop.arrival.time >= Date.now() / 1000) {
-          response.push({
-            route: lineInfo[route].short_name,
-            to: lineInfo[route].to[direction],
-            unix: unix,
-            time: new Date(unix * 1000).toLocaleTimeString(),
-          });
-        }
-      });
-    });
-    response.sort((a, b) => a.unix - b.unix);
+  console.log(
+    `Now: ${now} Udpated: ${last_updated} Interval: ${update_interval} Since Update: ${timeSinceUpdate}`,
+  );
 
-    return formatter(response);
-  } catch (error) {
-    console.error(error);
+  if (timeSinceUpdate > update_interval) {
+    let data = await getGTFS();
+    updateLocalCache("live", "table", data);
+    console.log("Cache updated!");
   }
+
+  return localCache.live.table.data;
 };
 
-let lineInfo = {
-  "Orange County Line": {
-    short_name: "OC",
-    to: {
-      0: "Oceanside",
-      1: "LA Union",
-    },
-  },
-  "Inland Emp.-Orange Co. Line": {
-    short_name: "OC-IE",
-    to: {
-      0: "Oceanside",
-      1: "San Bern.",
-    },
-  },
+let getStationData = async (stopID) => {
+  let feed = await getCacheData();
+
+  let response = [];
+  // let filtered = feed.filter((entity) => entity.trip.routeId === routeID);
+
+  feed.forEach((trip) => {
+    let route = trip.trip.routeId;
+    let direction = trip.trip.directionId;
+    let allStops = trip.stopTimeUpdate;
+
+    allStops.forEach((stop) => {
+      let unix = stop.arrival.time;
+      if (stop.stopId == stopID && stop.arrival.time >= Date.now() / 1000) {
+        response.push({
+          route: lineInfo[route].short_name,
+          to: lineInfo[route].to[direction],
+          unix: unix,
+          time: new Date(unix * 1000).toLocaleTimeString(),
+        });
+      }
+    });
+  });
+  response.sort((a, b) => a.unix - b.unix);
+
+  return formatter(response);
 };
 
 let formatter = (jason) => {

@@ -46,6 +46,6 @@ export let localCache = {
       data: null,
       last_updated: null,
     },
-    update_interval: 3000,
+    update_interval: 60000,
   },
 };
