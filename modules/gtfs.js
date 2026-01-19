@@ -1,4 +1,6 @@
 import "dotenv/config";
+import { updateLocalCache, localCache } from "./cache.js";
+import { lineInfo } from "./line-info.js";
 
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 
