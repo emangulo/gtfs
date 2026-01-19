@@ -11,4 +11,7 @@ export let localCache = {
     last_updated: null,
     update_interval: 60000,
   },
+  static: {
+    update_interval: 60000,
+  },
 };
