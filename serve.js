@@ -5,7 +5,7 @@ let PORT = process.env.PORT || 3000;
 
 let app = express();
 
-app.get("/:stationID", async (req, res) => {
+app.get("/live/:stationID", async (req, res) => {
   try {
     let stationData = await getStationData(req.params.stationID);
     console.log(stationData);
