@@ -95,7 +95,7 @@ let formatter = (jason) => {
   let res = [];
 
   jason.forEach((entity) => {
-    res.push(`${entity.route} > ${entity.to} ${entity.time} ...`);
+    res.push(`🚆 ${entity.route} > ${entity.to} ${entity.time} ...`);
   });
   return JSON.stringify(res);
 };
