@@ -46,7 +46,7 @@ let getGTFS = async () => {
 let getCacheData = async () => {
   let now = Date.now();
 
-  let last_updated = localCache.live.table.last_updated;
+  let last_updated = localCache.live.last_updated;
   let update_interval = localCache.live.update_interval;
   let timeSinceUpdate = now - last_updated;
 
@@ -56,14 +56,14 @@ let getCacheData = async () => {
 
   if (timeSinceUpdate > update_interval) {
     let data = await getGTFS();
-    updateLocalCache("live", "table", data);
+    updateLocalCache("live", data);
     console.log("Cache updated!");
   }
 
-  return localCache.live.table.data;
+  return localCache.live.data;
 };
 
-let getStationData = async (stopID) => {
+export let getStationData = async (stopID) => {
   let feed = await getCacheData();
 
   let response = [];
@@ -99,5 +99,3 @@ let formatter = (jason) => {
   });
   return JSON.stringify(res);
 };
-
-export { getStationData };
