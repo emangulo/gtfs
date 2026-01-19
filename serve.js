@@ -1,6 +1,5 @@
 import express from "express";
-import { getStationData } from "./modules/gtfs-live.js";
-import { getStaticTable, tableGetUpdate } from "./modules/gtfs-static.js";
+import { getStationData } from "./modules/gtfs.js";
 
 let PORT = process.env.PORT || 3000;
 
@@ -17,24 +16,6 @@ app.get("/live/:stationID", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
-
-app.get("/static/:table", async (req, res) => {
-  try {
-    let response = await tableGetUpdate();
-    // console.log(response);
-
-    res.send(response);
-  } catch (error) {
-    console.error;
-  }
-
-  // try {
-  //   let response = await getStaticTable(req.params.table);
-  //   console.log(response);
-
-  //   res.send(response);
-  // } catch (error) {}
 });
 
 app.listen(PORT, () => {
