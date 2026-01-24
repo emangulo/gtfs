@@ -68,18 +68,18 @@ export let getStationData = async (stopID) => {
     let allStops = trip.stopTimeUpdate;
 
     allStops.forEach((stop) => {
-      let unix = stop.arrival.time;
+      // let unix = stop.arrival.time;
       if (stop.stopId == stopID && stop.arrival.time >= Date.now() / 1000) {
         response.push({
           route: lineInfo[route].short_name,
           to: lineInfo[route].to[direction],
-          unix: unix,
-          time: new Date(unix * 1000).toLocaleTimeString(),
+          time: stop.arrival.time,
+          // time: new Date(unix * 1000).toLocaleTimeString(),
         });
       }
     });
   });
-  response.sort((a, b) => a.unix - b.unix);
+  response.sort((a, b) => a.time - b.time);
 
   return formatter(response);
 };
@@ -88,7 +88,10 @@ let formatter = (jason) => {
   let res = [];
 
   jason.forEach((entity) => {
-    res.push(`🚆 ${entity.route} > ${entity.to} ${entity.time} ...`);
+    let localTime = new Date(entity.time * 1000).toLocaleTimeString("en-US", {
+      timeZone: "America/Los_Angeles",
+    });
+    res.push(`🚆 ${entity.route} > ${entity.to} ${localTime} ...`);
   });
   return JSON.stringify(res);
 };
