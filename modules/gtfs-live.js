@@ -42,10 +42,8 @@ let getGTFS = async () => {
   }
 };
 
-// Get cache data or update cache with latest
-let getCacheData = async () => {
+export let getStationData = async (stopID) => {
   let now = Date.now();
-
   let last_updated = localCache.live.last_updated;
   let update_interval = localCache.live.update_interval;
   let timeSinceUpdate = now - last_updated;
@@ -59,12 +57,7 @@ let getCacheData = async () => {
     updateLocalCache("live", data);
     console.log("Cache updated!");
   }
-
-  return localCache.live.data;
-};
-
-export let getStationData = async (stopID) => {
-  let feed = await getCacheData();
+  let feed = localCache.live.data;
 
   let response = [];
   // let filtered = feed.filter((entity) => entity.trip.routeId === routeID);
