@@ -16,7 +16,7 @@ let stationScheduleRawData = async (stationID) => {
   }
 };
 
-let upsertLocalCache = async (stationID) => {
+export let getStationSchedule = async (stationID) => {
   let now = Date.now();
 
   let last_updated =
@@ -37,13 +37,4 @@ let upsertLocalCache = async (stationID) => {
   }
 
   return staticCache[stationID].data;
-};
-
-export let getStationSchedule = async (stationID) => {
-  try {
-    let response = upsertLocalCache(stationID);
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
 };
