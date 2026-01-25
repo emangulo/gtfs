@@ -1,6 +1,6 @@
 import express from "express";
-import { getStationData } from "./modules/gtfs-live.js";
-import { getStationSchedule } from "./modules/gtfs-static.js";
+import { routerLive } from "./modules/routes/live-routes.js";
+import { routerStatic } from "./modules/routes/static-routes.js";
 
 let PORT = process.env.PORT || 3000;
 let app = express();
@@ -18,22 +18,9 @@ let checkAPIKey = (req, res, next) => {
 };
 app.use(checkAPIKey);
 
-// Routes Here
-app.get("/live/:stationID", async (req, res) => {
-  try {
-    let stationData = await getStationData(req.params.stationID);
-    res.send(stationData);
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-app.get("/static/:stationID", async (req, res) => {
-  try {
-    let response = await getStationSchedule(req.params.stationID);
-    res.send(response);
-  } catch (error) {}
-});
+// Routes
+app.use("/live", routerLive);
+app.use("/static", routerStatic);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
