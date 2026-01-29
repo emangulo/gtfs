@@ -8,6 +8,10 @@ let app = express();
 
 const API_KEY = process.env.API_KEY;
 
+app.get("/callback", (req, res) => {
+  res.send(req.query.code);
+});
+
 let checkAPIKey = (req, res, next) => {
   const apiKey = req.query.api_key;
 
