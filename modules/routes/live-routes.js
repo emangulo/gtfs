@@ -1,9 +1,9 @@
 import express from "express";
-let routerLive = express.Router();
+let router = express.Router();
 
 import { getStationData } from "../gtfs-live.js";
 
-routerLive.get("/:stationID", async (req, res) => {
+router.get("/:stationID", async (req, res) => {
   try {
     let stationData = await getStationData(req.params.stationID);
     if (stationData == []) {
@@ -16,4 +16,4 @@ routerLive.get("/:stationID", async (req, res) => {
   }
 });
 
-export { routerLive };
+export { router as routerLive };
