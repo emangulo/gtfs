@@ -9,7 +9,11 @@ let stationScheduleRawData = async (stationID) => {
     const { data, error } = await supabase
       .from("stop_times")
       .select()
-      .eq("stop_id", stationID);
+      .eq("stop_id", stationID)
+      .order("arrival_time", { ascending: true });
+    if (error) {
+      console.log(error);
+    }
     return data;
   } catch (error) {
     console.error(error);
