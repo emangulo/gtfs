@@ -9,7 +9,8 @@ let app = express();
 const API_KEY = process.env.API_KEY;
 
 app.get("/callback", (req, res) => {
-  res.send(req.query.code);
+  console.log(req.query.code);
+  res.send("Logged!");
 });
 
 let checkAPIKey = (req, res, next) => {
