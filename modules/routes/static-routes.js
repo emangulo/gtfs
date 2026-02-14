@@ -1,7 +1,7 @@
 import express from "express";
 let router = express.Router();
 
-import { getStationSchedule } from "../data/gtfs-static.js";
+import { getStationSchedule } from "../gtfs-static.js";
 
 router.get("/:stationID", async (req, res) => {
   try {

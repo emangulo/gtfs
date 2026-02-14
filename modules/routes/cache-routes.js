@@ -1,7 +1,7 @@
 import express from "express";
 let router = express.Router();
 
-import { localCache, staticCache } from "../data/cache.js";
+import { localCache, staticCache } from "../cache.js";
 
 router.get("/:type", async (req, res) => {
   if (req.params.type == "live") {
