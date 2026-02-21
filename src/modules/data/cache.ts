@@ -1,4 +1,5 @@
-export let updateLocalCache = (scheme, data) => {
+// @ts-nocheck
+export let updateLocalCache = (scheme: string, data) => {
   let now = Date.now();
 
   localCache[scheme].data = data;
@@ -13,7 +14,7 @@ export let localCache = {
   },
 };
 
-export let updateStaticCache = (stationID, data) => {
+export let updateStaticCache = (stationID: number, data) => {
   let now = Date.now();
 
   staticCache[stationID] = {};

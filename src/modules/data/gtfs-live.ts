@@ -1,3 +1,4 @@
+//@ts-nocheck
 import "dotenv/config";
 import { updateLocalCache, localCache } from "./cache.js";
 import { lineInfo } from "./line-info.js";

@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "serve.js",
   "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/serve.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,9 +17,12 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "gtfs-realtime-bindings": "^1.1.1",
-    "pm2": "^6.0.14"
+    "pm2": "^6.0.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "nodemon": "^3.1.11"
   }
 }
