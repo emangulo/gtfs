@@ -1,4 +1,5 @@
 //@ts-nocheck
+import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import { staticCache, updateStaticCache } from "./cache.js";
 
