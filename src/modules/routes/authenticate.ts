@@ -1,4 +1,3 @@
-import "dotenv/config";
 import type { Request, Response, NextFunction } from "express";
 
 const API_KEY = process.env.API_KEY;
